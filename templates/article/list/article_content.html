@@ -72,7 +72,7 @@
         <p style="margin-left: 40px">{{ comment.body }}</p>
     </div>
 {% empty %}
-    <p>没要喷子bb你</p>
+    <p>没要喷子bb你！</p>
 {% endfor %}
 
 <h3><span class="glyphicon glyphicon-send"></span>看楼主🦐bb，就得喷，我行我不上，不行就bb</h3>
@@ -101,7 +101,7 @@
             <p class="text-center">
                 <h3>最热文章</h3>
             </p>
-            <ol>
+            <ol>    
                 {% for article_rank in most_viewed %}
                 <li>
                     <a href="{{ article_rank.get_url_path }}">{{ article_rank.title }}</a>
