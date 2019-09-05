@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load article_tags %}
+{% block title %} articles {% endblock %}
+{% block content %}
+<div class="row text-center vertical-middle-sm">
+    <h1>你好 菜🐶</h1>
+    <p>这里现在有{% total_articles %}只🐂🍺供你吹</p>
+</div>
+<div class="container">
+    {% for article in articles %}
+    <div class="list-group">
+        <a href="{{article.get_url_path}}" class="list-group-item active">
+            <h4 class="list-group-item-heading">{{article.title}}</h4>
+        </a>
+        <p class="list-group-item-text">作者: <a href="{% url "article:author_articles" article.author.username %}">{{article.author.username}}</a> </p>
+        <p class="list-group-item-text">概要:{{article.body|slice:'70'| linebreaks}}</p>
+    </div>
+    {% endfor %}
+{% include "paginator.html" %}
+</div>
+{% endblock %}

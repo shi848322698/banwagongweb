@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home page{% endblock %}
+{% block content %}
+<div class="text-center">
+    <h1>欢迎你 我的朋友</h1>
+    <h3>生命如此短暂，用浏览这个网站的时间去玩会游戏他不香么？</h3>
+    <h2>去吧朋友，玩，干他妈的！</h2>
+    {% load staticfiles %}
+    <img src="{% static 'images/timg.gif' %}">
+</div>
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load article_tags %}
+{% block title %}
+{{ article.title }}
+{% endblock %}
+{% block content %}
+    {% with total_like=article.users_like.count  user_like=article.users_like.all %}
+
+        <div class="container">
+
+<div class="col-md-9">
+
+<div class="container">
+    <header>
+        <h1>
+           {{ article.title }}
+        </h1>
+        <p>
+            <a href="{% url "article:author_articles" article.author.username%}">
+                {{ article.author.username }}
+            </a>
+            <span style="margin-left: 20px" class="glyphicon glyphicon-thumbs-up">
+                {{ total_like }}赞
+            </span>
+            <span style="margin-left: 20px" >
+                {{ total_views }}阅读
+            </span>
+        </p>
+        <p>
+            <span style="margin-right: 10px">
+                <strong>Tags:</strong>
+            </span>
+            {{ article.article_tag.all | join:"," }}
+        </p>
+    </header>
+    <link rel="stylesheet" href="{% static 'editor/css/editormd.preview.css' %}" />
+<div id="editormd-view">
+{{ article.body | markdown }}
+</div>
+
+            <div>
+                <p class="text-center">
+                    <a href="" onclick="like_article({{ article.id }}, 'like')">
+                        <span class="glyphicon glyphicon-thumbs-up">为你打call</span>
+                    </a>
+                    <a href="" onclick="like_article({{ article.id }}, 'unlike')">
+                        <span style="margin-left: 15px" class="glyphicon glyphicon-thumbs-up">辣鸡儿</span>
+                    </a>
+                </p>
+            </div>
+            <div>
+                <p class="text-center">
+                    <strong>为本文打call的读者</strong>
+                </p>
+                {% for user in article.users_like.all %}
+                    <p class="text-center">{{ user.username }}</p>
+                {% empty %}
+                    <p class="text-center">舔狗总将一无所有</p>
+                {% endfor %}
+
+            </div>
+
+
+<hr>
+</div>
+    <h3><span class="glyphicon glyphicon-bullhorn">
+    </span>{{ comments.count }}评论</h3>
+{% for comment in article.comments.all %}
+    <div>
+        <p><strong>{{ comment.commentator }}</strong></p>
+        <p style="margin-left: 40px">{{ comment.body }}</p>
+    </div>
+{% empty %}
+    <p>没要喷子bb你</p>
+{% endfor %}
+
+<h3><span class="glyphicon glyphicon-send"></span>看楼主🦐bb，就得喷，我行我不上，不行就bb，顺网线要死我？你🐎死了</h3>
+<form action="" method="post" class="form-horizontal" role="form">{% csrf_token %}
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">敢于bb的人是</label>
+                <div class="col-sm-10">
+                    {{ comment_form.commentator}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">bb</label>
+                <div class="col-sm-10">
+                    {{ comment_form.body }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <p><input type="submit" name="" value="开始bb " class="btn btn-primary"></p>
+                </div>
+            </div>
+        </form>
+
+</div>
+         <div class="col-md-3">
+            <p class="text-center">
+                <h3>最热文章</h3>
+            </p>
+            <ol>
+                {% for article_rank in most_viewed %}
+                <li>
+                    <a href="{{ article_rank.get_url_path }}">{{ article_rank.title }}</a>
+                </li>
+                {% endfor %}
+
+            </ol>
+                <hr>
+            <p class="text-center">
+                <h3>最新文章</h3>
+                {% latest_articles 4 %}
+            </p>
+               <hr>
+    <p class="text-center"><h3>最多评论文章</h3></p>
+    {% most_commented_articles as most_comments %}
+    <ul>
+        {% for comment_article in most_comments %}
+        <li>
+            <a href="{{comment_article.get_url_path}}">{{ comment_article.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+     <hr>
+    <p class="text-center"><h3>推荐相似文章</h3></p>
+    {% for similar in similar_articles %}
+    <p><a href="{{ similar.get_url_path }}">{{ similar.title }}</a></p>
+    {% empty %}
+    <p>Sorry, 没有相似文章</p>
+    {% endfor %}
+
+
+            </div>
+</div>
+
+        </div>
+<script src='{% static "js/jquery.js" %}'></script>
+<script src='{% static "editor/lib/marked.min.js" %}'></script>
+<script src='{% static "editor/lib/prettify.min.js" %}'></script>
+<script src='{% static "editor/lib/raphael.min.js" %}'></script>
+<script src='{% static "editor/lib/underscore.min.js" %}'></script>
+<script src='{% static "editor/lib/sequence-diagram.min.js" %}'></script>
+<script src='{% static "editor/lib/flowchart.min.js" %}'></script>
+<script src='{% static "editor/lib/jquery.flowchart.min.js" %}'></script>
+<script src='{% static "editor/editormd.js" %}'></script>
+<script type="text/javascript" src="{% static 'js/layer.js'%}"></script>
+<script type="text/javascript">
+$(function(){
+    editormd.markdownToHTML("editormd-view", {
+        htmlDecode: "style, script, iframe",
+        emoji: true,
+        taskList:true,
+        tex:true,
+        flowChart:true,
+        sequenceDiagram : true,
+    });
+});
+
+function like_article(id, action){
+    $.ajax({
+        url: "{% url 'article:like_article' %}",
+        type: "POST",
+        data: {"id":id, "action":action},
+        success: function(e){
+            if(e=="1"){
+                layer.msg("谢谢你铁子");
+                window.location.reload();
+            }else{
+                layer.msg("你妈死了！！！");
+                window.location.reload();
+            }
+        },
+    });
+}
+</script>
+{% endwith %}
+{% endblock %}
