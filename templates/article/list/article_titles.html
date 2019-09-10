@@ -6,14 +6,17 @@
     <h1>你好 菜🐶</h1>
     <p>这里现在有{% total_articles %}只🐂🍺供你吹</p>
 </div>
-<div class="container">
+<div class="panel panel-default">
     {% for article in articles %}
-    <div class="list-group">
-        <a href="{{article.get_url_path}}" class="list-group-item active">
-            <h4 class="list-group-item-heading">{{article.title}}</h4>
+    <div class="panel panel-warning">
+        <div class="panel-heading"><a href="{{article.get_url_path}}">
+            {{article.title}}
         </a>
-        <p class="list-group-item-text">作者: <a href="{% url "article:author_articles" article.author.username %}">{{article.author.username}}</a> </p>
-        <p class="list-group-item-text">概要:{{article.body|slice:'70'| linebreaks}}</p>
+        </div>
+        <div class="panel-body">
+            <a href="{% url "article:author_articles" article.author.username %}">{{article.author.username}}</a>
+            {{article.body|slice:'70'| linebreaks}}
+        </div>
     </div>
     {% endfor %}
 {% include "paginator.html" %}

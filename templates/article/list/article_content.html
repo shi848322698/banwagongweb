@@ -20,10 +20,10 @@
             <a href="{% url "article:author_articles" article.author.username%}">
                 {{ article.author.username }}
             </a>
-            <span style="margin-left: 20px" class="glyphicon glyphicon-thumbs-up">
-                {{ total_like }}赞
-            </span>
-            <span style="margin-left: 20px" >
+            <a href="" onclick="like_article({{ article.id }}, 'like')">
+                         <span class="badge">{{ total_like }}赞</span>
+            </a>
+            <span class="badge" >
                 {{ total_views }}阅读
             </span>
         </p>
@@ -38,30 +38,6 @@
 <div id="editormd-view">
 {{ article.body | markdown }}
 </div>
-
-            <div>
-                <p class="text-center">
-                    <a href="" onclick="like_article({{ article.id }}, 'like')">
-                        <span class="glyphicon glyphicon-thumbs-up">为你打call</span>
-                    </a>
-                    <a href="" onclick="like_article({{ article.id }}, 'unlike')">
-                        <span style="margin-left: 15px" class="glyphicon glyphicon-thumbs-up">辣鸡儿</span>
-                    </a>
-                </p>
-            </div>
-            <div>
-                <p class="text-center">
-                    <strong>为本文打call的读者</strong>
-                </p>
-                {% for user in article.users_like.all %}
-                    <p class="text-center">{{ user.username }}</p>
-                {% empty %}
-                    <p class="text-center">舔狗终将一无所有</p>
-                {% endfor %}
-
-            </div>
-
-
 <hr>
 </div>
     <h3><span class="glyphicon glyphicon-bullhorn">
