@@ -15,3 +15,6 @@ def blog_article(request, article_id):
 
 def boost(request):
     return render(request, 'boostrap_test.html')
+
+def home(request):
+    return render(request, 'home.html')
