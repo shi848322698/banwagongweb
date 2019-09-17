@@ -79,12 +79,27 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+
+# 使用本身sqllite的配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# 使用mysql的配置
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql', #选择mysql引擎
+#         'NAME': 'my_mysql', #数据库名
+#         'USER': 'root', #用户
+#         'PASSWORD': 'qwe654123', #密码
+#         'HOST': 'localhost', #连接IP地址，默认本地
+#         'PORT': '3306', #端口，默认3306
+#     }
+# }
 
 
 # Password validation
