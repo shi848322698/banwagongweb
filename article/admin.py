@@ -13,5 +13,5 @@ class ArticlePOSTAdmin(admin.ModelAdmin):
 admin.site.register(ArticleColumn, ArticleColumnAdmin)
 admin.site.register(ArticlePost, ArticlePOSTAdmin)
 
-
+# ceshishengjimacxitongde xiugai
 # Register your models here.
